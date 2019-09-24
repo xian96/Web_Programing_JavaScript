@@ -1,0 +1,16 @@
+{
+  "name": "lab3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "node app.js"
+  },
+  "author": "Jiaxian Xing 10439460",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "bluebird": "^3.5.5"
+  }
+}
