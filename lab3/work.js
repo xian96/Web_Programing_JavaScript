@@ -46,6 +46,8 @@ async function whereDoTheyWork(firstName, lastName) {
 }
 
 async function ValidateIPaddress(ip) {
+    if (ip == undefined)
+        throw `ip is not exist`;
     if (!/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ip))
         throw `ip:${ip} is not a valid ip address`;
 }

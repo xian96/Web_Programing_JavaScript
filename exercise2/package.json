@@ -1,5 +1,5 @@
 {
-  "name": "lab3",
+  "name": "exercise2",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -7,9 +7,6 @@
     "start": "node app.js",
     "test": "node app.js"
   },
-  "author": "Jiaxian Xing 10439460",
-  "license": "ISC",
-  "dependencies": {
-    "axios": "^0.19.0"
-  }
+  "author": "JiaxianXing",
+  "license": "ISC"
 }
