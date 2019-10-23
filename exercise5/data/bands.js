@@ -1,5 +1,6 @@
 const mongoCollections = require('../config/mongoCollections');
 const bands = mongoCollections.bands;
+const { ObjectId } = require("mongodb");
 
 let exportedMethods = {
   getAllBands() {
@@ -10,9 +11,8 @@ let exportedMethods = {
     return allBand;
   },
   getBandByName(id) {
-    //TODO: Return a band from the DB based on the ID
     if (!id)
-      throw "You must provide an id to search for";  
+      throw "You must provide an id to search for";
     if (typeof id !== 'string') {// you'll have to convert into ObjectID 
       throw `id:${id} type is Type:${typeof id}. Need string`;
     }
@@ -38,8 +38,7 @@ let exportedMethods = {
     //         genre: ["Progressive Rock", "Psychedelic rock", "Classic Rock"],
     //           recordLabel: "EMI"
     // }
-
-    if (!id)
+    if (!bandName)
       throw `bandName:${bandName} is not exist`;
     else if (typeof bandName !== 'string' || bandName instanceof String)
       throw `bandName:${bandName} is not an string`;
@@ -51,10 +50,19 @@ let exportedMethods = {
       throw `bandMembers:${bandMembers} is not array`;
     else if (bandMembers.length < 1)
       throw `bandMembers:${bandMembers} MUST have at least one band member`;
-    //TODO:
-    //array of objects that contain band members first name and last name
-    // else if ()
-    //   throw ``;
+    bandMembers.forEach(function (bandMember) {
+      if (typeof bandMember !== "object")
+        throw `bandMember:${bandMember} is not an object`;
+      else if (!bandMember.hasOwnProperty('firstName') || !bandMember.hasOwnProperty('lastName')) {//neither
+        throw `bandMember:${bandMember} is lack of firstName or lastName or both`;
+      }
+      else {
+        if (typeof bandMember["firstName"] !== 'string' || bandMember["firstName"] instanceof String)
+          throw `bandMember["firstName"]:${bandMember["firstName"]} is not an string`;
+        if (typeof bandMember["lastName"] !== 'string' || bandMember["lastName"] instanceof String)
+          throw `bandMember["lastName"]:${bandMember["lastName"]} is not an string`;
+      }
+    });
 
     // yearFormed = number year the band formed//(can't be empty, undefined, null, must be greater than or equal to 1900 less than 2019)
     if (!yearFormed)

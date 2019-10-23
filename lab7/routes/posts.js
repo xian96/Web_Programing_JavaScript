@@ -6,12 +6,16 @@ const postData = data.posts
 // const likeData = data.likes
 
 // {
-//     "_id": "", //STRING OR OBJECT ID
-//     "title": "", // String title
-//     "author": "", // STRING OR OBJECT ID
-//     "content": "" // String
+//     "_id": "a4f8512b9a734baf863ff33ffbabab2d",
+//     "title": "Don't ask me how the weather is up here", 
+//     "content": "It's only like a few feet higher than you. The weather isn't different. Stop harassing me.",
+//     "author": 
+//     {
+//         "_id": "507f1f77bcf86cd799439011", 
+//         "name": "Mortimer"
+//     }
 // }
-
+// show the _id and name of the author, as seen above.TODO:
 router.get('/', async (req, res) => {
     try {
         const postList = await postData.getAll();
@@ -21,31 +25,35 @@ router.get('/', async (req, res) => {
     }
 });
 
+// {
+//     "title": "", // String title
+//     "author": "", // STRING OR OBJECT ID
+//     "content": "" // String
+// }
+router.post('/', async (req, res) => {
+    const newPostData = req.body;
+    try {
+        const { title, author, content } = newPostData;
+        const newPost = await postData.addPost(title, author, content);
+        res.status(200).json(newPost);
+    } catch (e) {
+        res.status(400).json({ error: e });
+    }
+});
+
 router.get('/:id', async (req, res) => {
     try {
         const post = await postData.getPostById(req.params.id);
-        res.json(post);
+        res.status(200).json(post);
     } catch (e) {
         res.status(404).json({ error: 'Post not found' });
     }
 });
 
-// router.get('/tag/:tag', async (req, res) => {
-//     const postList = await postData.getPostsByTag(req.params.tag);
-//     res.json(postList);
-// });
-
-router.post('/', async (req, res) => {
-    const blogPostData = req.body;
-    try {
-        const { title, body, tags, posterId } = blogPostData;
-        const newPost = await postData.addPost(title, body, tags, posterId);
-        res.json(newPost);
-    } catch (e) {
-        res.status(500).json({ error: e });
-    }
-});
-
+// {
+//     "newTitle": "new title",
+//     "newContent: "The new content of the post"
+// }
 router.put('/:id', async (req, res) => {
     const updatedData = req.body;
     try {
@@ -59,7 +67,7 @@ router.put('/:id', async (req, res) => {
         const updatedPost = await postData.updatePost(req.params.id, updatedData);
         res.json(updatedPost);
     } catch (e) {
-        res.status(500).json({ error: e });
+        res.status(400).json({ error: e });
     }
 });
 

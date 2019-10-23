@@ -64,13 +64,18 @@ async function getAll() {
 // }
 async function getAnimalById(id) {
     if (!id)
-        throw "You must provide an id to search for";
-    if (typeof id !== 'string') {// you'll have to convert into ObjectID 
-        throw `id:${id} type is Type:${typeof id}. Need string type`;
+        throw "You must provide a id for your post";
+    else if (!ObjectID.isValid(id)) {
+        if (typeof id === 'string') {//id type is 'string' you'll have to convert into ObjectID 
+            id = ObjectId(id);
+        }
+        else {
+            throw `id:${id}, Must Be STRING OR OBJECT ID`;
+        }
     }
 
     const animalCollection = await animals();
-    const animalGet = await animalCollection.findOne({ _id: ObjectId(id) });
+    const animalGet = await animalCollection.findOne({ _id: id });
     if (animalGet === null)
         throw "No animal with that id";
 
@@ -79,12 +84,17 @@ async function getAnimalById(id) {
 
 async function update(id, newInfo) {
     if (!id)
-        throw "You must provide an id to search for";
-    if (typeof id !== 'string') {// you'll have to convert into ObjectID 
-        throw "You must provide a string for your animal id";
+        throw "You must provide a id for your post";
+    else if (!ObjectID.isValid(id)) {
+        if (typeof id === 'string') {//id type is 'string' you'll have to convert into ObjectID 
+            id = ObjectId(id);
+        }
+        else {
+            throw `id:${id}, Must Be STRING OR OBJECT ID`;
+        }
     }
     const animalCollection = await animals();
-    const animal = await animalCollection.findOne({ _id: ObjectId(id) });
+    const animal = await animalCollection.findOne({ _id: id });
 
     if (!newInfo)
         throw "You must provide a newName for your animal";
@@ -127,6 +137,29 @@ async function update(id, newInfo) {
     }
 
     return await this.getAnimalById(id);
+}
+
+async function updateAnimalPost(animalId, postId, postTittle) {
+    if (!animalId)
+        throw "You must provide a animalId for your post";
+    else if (!ObjectID.isValid(animalId)) {
+        if (typeof animalId === 'string') {//animalId type is 'string' you'll have to convert into ObjectID 
+            animalId = ObjectId(animalId);
+        }
+        else {
+            throw `id:${animalId}, Must Be STRING OR OBJECT ID`;
+        }
+    }
+    const animalCollection = await animals();
+    const updateInfo = await animalCollection.updateOne({ _id: animalId },
+        { $push: { posts: { postid: postId, tittle: postTittle } } }
+    );
+
+    if (!updateInfo.modifiedCount) {
+        throw `could not update animal post with animalId:${animalId} successfully`;
+    }
+
+    return await this.getAnimalById(animalId);
 }
 
 async function remove(id) {
@@ -187,5 +220,5 @@ async function remove(id) {
 }
 
 module.exports = {
-    create, getAll, getAnimalById, remove, update,
+    create, getAll, getAnimalById, remove, update, updateAnimalPost,
 }

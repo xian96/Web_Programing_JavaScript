@@ -1,4 +1,3 @@
-  
 const bandData = require('./bands');
 
 module.exports = {
