@@ -1,7 +1,8 @@
 const Collections = require("../database/collections");
 const animals = Collections.animals;
 const posts = Collections.posts;
-const ObjectId = require('mongodb').ObjectID;
+const postData = require("./posts");
+ObjectID = require('mongodb').ObjectID;
 /*
 {
     "_id": "", //STRING OR OBJECT ID
@@ -34,7 +35,7 @@ async function create(name, animalType) {
 
     const newId = insertInfo.insertedId;
     // console.log(typeof newId);
-    const animal = await animalCollection.findOne({ _id: newId });
+    const animal = await animalCollection.findOne({ _id: ObjectID(newId) });
     return animal;
 }
 
@@ -45,6 +46,7 @@ async function getAll() {
 
     return allAnimals;
 }
+
 // {
 //     "_id": "507f1f77bcf86cd799439011", 
 //     "name": "Mortimer",
@@ -67,7 +69,7 @@ async function getAnimalById(id) {
         throw "You must provide a id for your post";
     else if (!ObjectID.isValid(id)) {
         if (typeof id === 'string') {//id type is 'string' you'll have to convert into ObjectID 
-            id = ObjectId(id);
+            id = ObjectID(id);
         }
         else {
             throw `id:${id}, Must Be STRING OR OBJECT ID`;
@@ -75,7 +77,7 @@ async function getAnimalById(id) {
     }
 
     const animalCollection = await animals();
-    const animalGet = await animalCollection.findOne({ _id: id });
+    const animalGet = await animalCollection.findOne({ _id: ObjectID(id) });
     if (animalGet === null)
         throw "No animal with that id";
 
@@ -87,14 +89,14 @@ async function update(id, newInfo) {
         throw "You must provide a id for your post";
     else if (!ObjectID.isValid(id)) {
         if (typeof id === 'string') {//id type is 'string' you'll have to convert into ObjectID 
-            id = ObjectId(id);
+            id = ObjectID(id);
         }
         else {
             throw `id:${id}, Must Be STRING OR OBJECT ID`;
         }
     }
     const animalCollection = await animals();
-    const animal = await animalCollection.findOne({ _id: id });
+    const animal = await animalCollection.findOne({ _id: ObjectID(id) });
 
     if (!newInfo)
         throw "You must provide a newName for your animal";
@@ -107,7 +109,8 @@ async function update(id, newInfo) {
     // "newType": "Noble Giraffe",
     // }
     // you may submit this request with either newName, newType, or both!
-    const updatedAnimal;
+    var updatedAnimal;
+    const nameChage = false;
     if (!newInfo.hasOwnProperty('newName') && !newInfo.hasOwnProperty('newType')) {//either
         throw `empty new info`;
     }
@@ -116,6 +119,7 @@ async function update(id, newInfo) {
             "name": animal.name,
             "animalType": newInfo['newType'],
         }
+        nameChage = true;
     }
     else if (!newInfo.hasOwnProperty('newType')) {//name
         updatedAnimal = {
@@ -130,28 +134,55 @@ async function update(id, newInfo) {
         }
     }
 
-    const updateInfo = await animalCollection.updateOne({ _id: ObjectId(id) }, { $set: updatedAnimal });
-    // const updateInfo = await animalCollection.updateOne({ _id: ObjectId.createFromHexString(id) }, { $set: updatedAnimal });
+    const updateInfo = await animalCollection.updateOne({ _id: ObjectID(id) }, { $set: updatedAnimal });
+    // const updateInfo = await animalCollection.updateOne({ _id: ObjectID.createFromHexString(id) }, { $set: updatedAnimal });
     if (updateInfo.modifiedCount === 0) {
         throw `could not update animal with id:${id} successfully`;
+    }
+
+    //change all post animal name:
+    if (nameChage) {
+        postData.updateAllName();
     }
 
     return await this.getAnimalById(id);
 }
 
 async function updateAnimalPost(animalId, postId, postTittle) {
+    console.log(animalId, postId, postTittle);    
     if (!animalId)
         throw "You must provide a animalId for your post";
     else if (!ObjectID.isValid(animalId)) {
         if (typeof animalId === 'string') {//animalId type is 'string' you'll have to convert into ObjectID 
-            animalId = ObjectId(animalId);
+            animalId = ObjectID(animalId);
         }
         else {
             throw `id:${animalId}, Must Be STRING OR OBJECT ID`;
         }
     }
+    if (!postId)
+        throw "You must provide a postid";
+    else if (!ObjectID.isValid(postId)) {
+        if (typeof animalId === 'string') {//animalId type is 'string' you'll have to convert into ObjectID 
+            postId = ObjectID(postId);
+        }
+        else {
+            throw `id:${postId}, Must Be STRING OR OBJECT ID`;
+        }
+    }
+    if (!postTittle)
+        throw "You must provide a postid";
+    else if (!ObjectID.isValid(postTittle)) {
+        if (typeof animalId === 'string') {//animalId type is 'string' you'll have to convert into ObjectID 
+        postTittle = ObjectID(postTittle);
+        }
+        else {
+            throw `id:${postTittle}, Must Be STRING OR OBJECT ID`;
+        }
+    }
+
     const animalCollection = await animals();
-    const updateInfo = await animalCollection.updateOne({ _id: animalId },
+    const updateInfo = await animalCollection.updateOne({ _id: ObjectID(animalId) },
         { $push: { posts: { postid: postId, tittle: postTittle } } }
     );
 
@@ -171,23 +202,22 @@ async function remove(id) {
     const animalCollection = await animals();
     const postCollection = await posts();
 
-    const removed = await animalCollection.findOne({ _id: ObjectId(id) });
+    const removed = await animalCollection.findOne({ _id: ObjectID(id) });
 
     // first delete all posts written by this animal:
     const animalPostAll = removed["posts"];
-    animalPostAll.forEach(function (post) {
-        // const removedPost = 
-        await postCollection.findOne({ _id: post["_id"] });//if post is added correctly this never throw.
-        const postDeletionInfo = await postCollection.removeOne({ _id: post["_id"] });
-        if (postDeletionInfo.deletedCount === 0) {//one of post from this animal failed.
-            throw `one of post from animal Id:${id} failed. Could not delete animal post with post id of ${post["_id"]}`;
-        }
-    });
+    // var postDeletionInfo;
+    // animalPostAll.forEach(function (post) {
+    //     // const removedPost = 
+    //     // await postCollection.findOne({ _id: post["_id"] });//if post is added correctly this never throw.
+    //     postDeletionInfo = await postCollection.removeOne({ _id: post["_id"] });
+    //     if (postDeletionInfo.deletedCount === 0) {//one of post from this animal failed.
+    //         throw `one of post from animal Id:${id} failed. Could not delete animal post with post id of ${post["_id"]}`;
+    //     }
+    // });
 
     // then delete animal:
-    const deletionInfo = await animalCollection.removeOne({ _id: ObjectId(id) });
-    // const removed = await animalCollection.findOne({ _id: ObjectId.createFromHexString(id) });
-    // const deletionInfo = await animalCollection.removeOne({ _id: ObjectId.createFromHexString(id) });//deleteOne?remove?delete? method i don't have here
+    const deletionInfo = await animalCollection.removeOne({ _id: ObjectID(id) });
 
     if (deletionInfo.deletedCount === 0) {
         throw `Could not delete animal with id of ${id}`;
@@ -214,11 +244,18 @@ async function remove(id) {
     // }  
     const removeReturn = {
         "deleted": true,
-        removed
+        "data": removed,
     }
     return removeReturn;
 }
+async function updateAllTitle() {
+    //TODO:
+}
+
+async function updateAllAnimalPost() {
+    //TODO:
+}
 
 module.exports = {
-    create, getAll, getAnimalById, remove, update, updateAnimalPost,
+    create, getAll, getAnimalById, remove, update, updateAnimalPost, updateAllTitle, updateAllAnimalPost,
 }

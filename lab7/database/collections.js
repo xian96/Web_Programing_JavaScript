@@ -13,6 +13,6 @@ const getCollection = (collection) => {
 };
 
 module.exports = { 
-    animals: getCollection(animals),
-    posts: getCollection(posts),
+    animals: getCollection("animals"),
+    posts: getCollection("posts"),
 }

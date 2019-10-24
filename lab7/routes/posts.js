@@ -37,7 +37,7 @@ router.post('/', async (req, res) => {
         const newPost = await postData.addPost(title, author, content);
         res.status(200).json(newPost);
     } catch (e) {
-        res.status(400).json({ error: e });
+        res.status(400).json({ error: e+"" });
     }
 });
 
@@ -79,8 +79,8 @@ router.delete('/:id', async (req, res) => {
         return;
     }
     try {
-        await postData.removePost(req.params.id);
-        res.sendStatus(200);
+        const PostDataDeleted = await postData.removePost(req.params.id);
+        res.status(200).json(PostDataDeleted);
     } catch (e) {
         res.status(500).json({ error: e });
     }
