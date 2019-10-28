@@ -5,9 +5,9 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     try {
         const allPeople = peopleData.getAllPeople();
-        res.render('', { allPeople: allPeople });
+        res.render('people/mainPage', { allPeople: allPeople });
     } catch (e) {
-        res.status(404).render('', { error: e });
+        res.status(404).render('error/error', { error: e });
     }
 });
 
