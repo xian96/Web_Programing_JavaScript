@@ -4,8 +4,9 @@ const router = express.Router();
 //DONT FORGET TO CHECK ALL INPUT TO MAKE SURE IT IS THERE, THAT IT IS VALID, AND PROPER TYPE
 router.get('/', async (req, res) => {
     try {
-        const allPeople = peopleData.getAllPeople();
-        res.render('people/mainPage', { allPeople: allPeople });
+        // const allPeople = peopleData.getAllPeople();
+        // res.render('', { allPeople: allPeople });
+        res.render('people/mainPage');
     } catch (e) {
         res.status(404).render('error/error', { error: e });
     }
