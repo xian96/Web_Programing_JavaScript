@@ -1,6 +1,6 @@
 const mongoCollections = require('../config/mongoCollections');
 const bands = mongoCollections.bands;
-const { ObjectId } = require("mongodb");
+const ObjectId = require("mongodb").ObjectID;
 
 let exportedMethods = {
   getAllBands() {
@@ -10,34 +10,25 @@ let exportedMethods = {
 
     return allBand;
   },
-  getBandByName(id) {
+  getBandById(id) {
     if (!id)
-      throw "You must provide an id to search for";
-    if (typeof id !== 'string') {// you'll have to convert into ObjectID 
-      throw `id:${id} type is Type:${typeof id}. Need string`;
+      throw `id:${id} is not exist`;
+    else if (typeof id !== 'string' || id instanceof String) {
+      if (typeof id !== 'ObjectId') {
+        id = ObjectId(id);//Here convert into ObjectID
+        console.log("after convert: " + typeof id);
+      }
+      else
+        throw `id:${id} is not an ObjectId or String`;
     }
     const bandCollection = await bands();
-    const bandGet = await bandCollection.findOne({ _id: ObjectId.createFromHexString(id) });//Here convert into ObjectID
+    const bandGet = await bandCollection.findOne({ _id: id });//Here convert into ObjectID
     if (bandGet === null)
-      throw "No animal with that id";
+      throw "No band with that id";
 
     return bandGet;
   },
   addBand(bandName, bandMembers, yearFormed, genres, recordLabel) {
-    // ex object:
-    // {
-    //   bandName: "Pink Floyd",
-    //     bandMembers: [
-    //       { firstName: "Roger", lastName: "Waters" },
-    //       { firstName: "David", lastName: "Gilmour" },
-    //       { firstName: "Nick", lastName: "Mason" },
-    //       { firstName: "Richard", lastName: "Wright" },
-    //       { firstName: "Syd", lastName: "Barrett" }
-    //     ],
-    //       yearFormed: 1965,
-    //         genre: ["Progressive Rock", "Psychedelic rock", "Classic Rock"],
-    //           recordLabel: "EMI"
-    // }
     if (!bandName)
       throw `bandName:${bandName} is not exist`;
     else if (typeof bandName !== 'string' || bandName instanceof String)
@@ -88,47 +79,76 @@ let exportedMethods = {
 
     // The function will return the newly inserted band, throw an error if the document cannot be inserted. 
     const bandCollection = await bands();
-
+    // bandName, bandMembers, yearFormed, genres, recordLabel
     let newBand = {
       // _id: "", 
-      bandName: "Pink Floyd",
-      bandMembers: [
-        { firstName: "Roger", lastName: "Waters" },
-        { firstName: "David", lastName: "Gilmour" },
-        { firstName: "Nick", lastName: "Mason" },
-        { firstName: "Richard", lastName: "Wright" },
-        { firstName: "Syd", lastName: "Barrett" }
-      ],
-      yearFormed: 1965,
-      genre: ["Progressive Rock", "Psychedelic rock", "Classic Rock"],
-      recordLabel: "EMI"
+      bandName: bandName,
+      bandMembers: [],
+      yearFormed: yearFormed,
+      genre: [],
+      recordLabel: recordLabel
+    }
+    for (const bandMember of bandMembers) {
+      newBand.bandMembers.push(
+        {
+          firstName: bandMember.firstName,
+          lastName: bandMember["lastName"]
+        }
+      );
+    }
+    for (const genre of genres) {
+      newBand.genre.push(genre);
     }
 
     const insertInfo = await bandCollection.insertOne(newBand);
     if (insertInfo.insertedCount === 0)
-      throw "Could not create animal";
+      throw "Could not create newBand";
 
     const newId = insertInfo.insertedId;
-    // console.log(typeof newId);
-    const band = await bandCollection.findOne({ _id: newId });
+    const band = await bandCollection.findOne({ _id: newId });//ObjectId(newId);should not needed.
     return band;
   },
   removeBand(id) {
     // TODO: Removes a band from the DB, return the list of all bands once band has been deleted (call getAllBands())
     // id is a string/object ID, it cannot be blank, cannot be null, cannot be undefined, must be present
+    if (!id)
+      throw `id:${id} is not exist`;
+    else if (typeof id !== 'string' || id instanceof String) {
+      if (typeof id !== 'ObjectId') {
+        id = ObjectId(id);
+        console.log("after convert: " + typeof id);
+      }
+      else
+        throw `id:${id} is not an ObjectId or String`;
+    }
     //If not found or not removed, throw an error.
+    const bandCollection = await bands();
+    const bandGet = await bandCollection.findOne({ _id: ObjectId.createFromHexString(id) });//Here convert into ObjectID
+    if (bandGet === null)
+      throw "No band with that id";
+
+    console.log("before the removeOne: " + typeof id)
+    const insertInfo = await bandCollection.removeOne({ _id: id });//ObjectId(id);
+    if (insertInfo.insertedCount === 0)
+      throw "Could not create animal";
+
+    const newId = insertInfo.insertedId;
+    return this.getBandById(newId);
   },
   searchBandByName(bandName) {
-    /*  
-      bandName = string, can't be blank, null, undefined, a number.. etc...
-      TODO: You will search the band name for the name supplied.  You will return wildcard matches..
-      for example:  searchBandByName("Pink") would return "Pink Floyd", "Pink" or any band that had pink in it's name
-     
-      You will need to use a RegEx for this.  like so:
-      let regex = new RegExp([".*", bandName, ".*"].join(""), "i");
-      and then in your find query use the regex.  {"bandName": regex}
-       If there are no bands found with that member then throw an error.
-    */
+    // bandName = string, can't be blank, null, undefined, a number.. etc...
+    if (!bandName)
+      throw `bandName:${bandName} is not exist`;
+    else if (typeof bandName !== 'string' || bandName instanceof String)
+      throw `bandName:${bandName} is not an string`;
+    // TODO: You will search the band name for the name supplied.  You will return wildcard matches..
+    // for example:  searchBandByName("Pink") would return "Pink Floyd", "Pink" or any band that had pink in it's name
+
+    // You will need to use a RegEx for this.  like so:
+    // let regex = new RegExp([".*", bandName, ".*"].join(""), "i");
+    // and then in your find query use the regex.  {"bandName": regex}
+    //  If there are no bands found with that member then throw an error.
+
   },
   searchBandMemberFullName(firstName, lastName) {
     /*  
