@@ -2,7 +2,7 @@ const MongoClient = require('mongodb').MongoClient;
 
 const mongoConfig = {
   serverUrl: 'mongodb://localhost:27017/',
-  database: 'intermediateMongoApi'
+  database: 'Jiaxian_Xing_exercise5'
 };
 
 let _connection = undefined;
