@@ -4,12 +4,14 @@
 <head>
     <meta charset="utf-8">
     <title>{{{title}}}</title>
-    <link rel="stylesheet" href="/public/site.css">
+    {{!-- <link rel="stylesheet" href="/public/site.css"> --}}
+    <link rel="stylesheet" href="{{link.href}}">
 </head>
 
 <body>
+    <h1>{{h1}}</h1>
     <main>
-        <p>website for lab8, search through a dataset.</p>
+        {{!-- what is body from? what data it stands for? --}}
         {{{body}}}
     </main>
 </body>

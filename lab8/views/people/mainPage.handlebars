@@ -1,7 +1,20 @@
-<form action="/posts" method="POST" class="">
-{{!-- ave an input and a label; the label should properly reference the same id as the input --}}
-<label for="input">
-    /search
-    <input type="text" name="search" placeholder="Post Title" value="{{people.search}}" class="full-width-input"/>
-</label>
-</form>
+<title>People Finder</title>
+<link rel="stylesheet" href="/public/site.css">
+
+{{!-- do need to wrap in the main tag??? or budy?? --}}
+<body>
+    <p>website for lab8, search through a dataset.</p>
+    <form action="/posts" method="POST" class="">
+        {{!-- have an input and a label; the label should properly reference the same id as the input --}}
+        <label>
+            /search/:
+            <input type="text" name="search" placeholder="search" value="{{personName}}" class="input_for_search" />
+        </label>
+
+        <label>
+            submit button
+            <button type="submit" />
+        </label>
+
+    </form>
+</body>
