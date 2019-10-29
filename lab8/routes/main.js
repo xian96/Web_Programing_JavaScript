@@ -6,7 +6,9 @@ router.get('/', async (req, res) => {
     try {
         // const allPeople = peopleData.getAllPeople();
         // res.render('', { allPeople: allPeople });
-        res.render('people/mainPage');
+        res.render('people/mainPage', {
+            linkHref: "/public/site.css"
+        });
     } catch (e) {
         res.status(404).render('error/error', { error: e });
     }

@@ -101,3 +101,7 @@
   .author-link:active {
     color: #ff0000;
   }
+
+  .not-found{
+    color: #ff0000;
+  }

@@ -4,13 +4,19 @@ const data = require('../data');
 const peopleData = data.peoples;
 
 //DONT FORGET TO CHECK ALL INPUT TO MAKE SURE IT IS THERE, THAT IT IS VALID, AND PROPER TYPE
+
 router.get('/:id', async (req, res) => {
-  // console.log(req.params.id);
   try {
-    const band = await bandData.getBandById(req.params.id);
-    res.json(band);
+    if (!req.params.id)
+      throw `no id provided`;
+    console.log(req.params.id);
+    const Person = peopleData.getPersonById(req.params.id);
+    res.render('people/detail', {
+      Person: Person,
+      linkHref: "/public/site.css"
+    });
   } catch (e) {
-    res.status(404).json({ error: 'Band not found' });
+    res.status(404).render('error/error', { error: e });
   }
 });
 

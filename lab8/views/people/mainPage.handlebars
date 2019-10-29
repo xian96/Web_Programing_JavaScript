@@ -1,20 +1,29 @@
-<title>People Finder</title>
-<link rel="stylesheet" href="/public/site.css">
-
+<link rel="stylesheet" href="{{linkHref}}">
+<h1>People Finder</h1>
 {{!-- do need to wrap in the main tag??? or budy?? --}}
+
 <body>
     <p>website for lab8, search through a dataset.</p>
-    <form action="/posts" method="POST" class="">
+    <form action="/search" method="POST" class="search_personName">
         {{!-- have an input and a label; the label should properly reference the same id as the input --}}
         <label>
-            /search/:
-            <input type="text" name="search" placeholder="search" value="{{personName}}" class="input_for_search" />
+            search input:
+            <input type="text" name="personName" placeholder="input_personName_for_search" value="{{personName}}"
+                class="personName for search">
         </label>
-
         <label>
-            submit button
-            <button type="submit" />
+            submit button:
+            <button type="submit">submit</button>
         </label>
 
     </form>
+    {{#if hasErrors}}
+    <ul class="error-list">
+        {{#each errors}}
+        <li>
+            {{this}}
+        </li>
+        {{/each}}
+    </ul>
+    {{/if}}
 </body>

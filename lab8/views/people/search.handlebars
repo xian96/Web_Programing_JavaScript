@@ -1,17 +1,24 @@
-<title>People Finder</title>
-<link rel="stylesheet" href="/public/site.css">
-
+<link rel="stylesheet" href="{{linkHref}}">
+<h1>People Finder</h1>
+<h2>{{searchedName}}</h2>
 {{!-- do need to wrap in the main tag??? --}}
-<main>
+
+<body>
+
+    {{!-- how to limit up to 20 --}}
+    {{#if Found}}
     <ul>
+    <p>one p; </p>
+        {{#each Person}}
         <li>
-            <a href="/details/1">Rob Herley</a>
+            <a href="/details/{{id}}">{{firstName}} {{lastName}}</a>
         </li>
-        <li>
-            <a href="/details/99">Dolph Robottham</a>
-        </li>
-        <li>
-            <a href="/details/270">Grady Orrobin</a>
-        </li>
+        {{/each}}
     </ul>
-</main>
+    {{else}}
+    <p class="not-found">We're sorry, but no results were found for {{searchedName}}.</p>
+    {{/if}}
+
+
+    <a href="/">back to mainPage</a>
+</body>
