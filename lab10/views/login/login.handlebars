@@ -4,6 +4,9 @@ the server must have an id of login-form. The input for the username must
 have a name/id of username; the input for the password must have name/id 
 of password. 
 --}}
+<div class="error" id="error-container">
+    <div>{{error}}</div>
+</div>
 
 <form action="/login" method="post" id="login-form">
     <div>
@@ -21,7 +24,3 @@ of password.
     </div>
 
 </form>
-
-<div class="error" id="error-container">
-    <div>{{error}}</div>
-</div>

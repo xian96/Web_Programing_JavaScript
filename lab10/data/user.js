@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const users = [
     {
-        _id: [],
+        _id: 0,
         username: "masterdetective123",
         firstName: "Sherlock",
         lastName: "Holmes",
@@ -10,7 +10,7 @@ const users = [
         hashedpassword: "$2a$16$7JKSiEmoP3GNDSalogqgPu0sUbwder7CAN/5wnvCWe6xCKAKwlTD.",
     },
     {
-        _id: [],
+        _id: 1,
         username: "lemon",
         firstName: "Elizabeth",
         lastName: "Lemon",
@@ -19,7 +19,7 @@ const users = [
         hashedpassword: "$2a$16$SsR2TGPD24nfBpyRlBzINeGU61AH0Yo/CbgfOlU1ajpjnPuiQaiDm",
     },
     {
-        _id: [],
+        _id: 2,
         username: "theboywholived",
         firstName: "Harry",
         lastName: "Potter",
@@ -35,21 +35,40 @@ function getUserByUsername(username) {
             return users[i];
         }
     }
-    throw 'username not found or not exist';
+    //not get one
+    return false;
 }
 
-async function CheckLogin(username, password) {
-    if (!username)
-        throw `not provide UserName`;
-    if (!password)
-        throw `not provide Password`;
+// function getUserById(id) {
+//     for (let i = 0; i < users.length; i++) {
+//         if (users[i]._id == id) {
+//             return users[i];
+//         }
+//     }
+//     //not get one
+//     throw `no user with this id!`;
+// }
 
+async function CheckLogin(username, password) {
     try {
-        const user = getUserByUsername(username);
-        var compareToMatch = await bcrypt.compare(password, user.hashedpassword);
-        if (!compareToMatch)
-            throw `username not correct`;
-        return compareToMatch;
+        if (!username)
+            throw `not provide username`;
+        if (!password)
+            throw `not provide password`;
+        //get the user
+        const user = getUserByUsername(username.toLowerCase());
+        if (user === false) {
+            return `username not found`;
+        }
+        else {
+            var compareToMatch = await bcrypt.compare(password, user.hashedpassword);
+            if (compareToMatch == false)
+                return `password not correct`;
+            else {
+                return true;
+            }
+        }
+
     } catch (e) {
         throw e;
     }
@@ -57,5 +76,5 @@ async function CheckLogin(username, password) {
 }
 
 module.exports = {
-    CheckLogin,
+    CheckLogin, getUserByUsername,
 };

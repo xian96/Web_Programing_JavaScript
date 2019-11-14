@@ -1,16 +1,16 @@
-// const data = require('../data');
-// const user = data.user;
 const express = require("express");
 // const router = express.Router();
 const app = express();
-// Middlewares:
 
-// 1. One which will log the last time the user has made a request, and store it in a cookie.
-function checkAuth(req, res, next) {
-    if (!(req.cookies.AuthCookie)) {
-        res.status(403).send("Unauthorized");
-        res.redirect("/");
+// your own authentication middleware to only allow valid, logged in users to see this page.
+function checkAuthentication(req, res, next) {
+    if (!req.session.authenticate) {
+        res.redirect('../login');
     }
-    next();
+    else {
+        next();
+    }
 }
-app.use(checkAuth);
+app.use(checkAuthentication);
+
+module.exports = app;
