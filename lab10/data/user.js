@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 const users = [
     {
         _id: [],
@@ -28,8 +29,31 @@ const users = [
     }
 ];
 
-async function CheckLogin(username,password) {
-    
+function getUserByUsername(username) {
+    for (let i = 0; i < users.length; i++) {
+        if (users[i].username == username) {
+            return users[i];
+        }
+    }
+    throw 'username not found or not exist';
+}
+
+async function CheckLogin(username, password) {
+    if (!username)
+        throw `not provide UserName`;
+    if (!password)
+        throw `not provide Password`;
+
+    try {
+        const user = getUserByUsername(username);
+        var compareToMatch = await bcrypt.compare(password, user.hashedpassword);
+        if (!compareToMatch)
+            throw `username not correct`;
+        return compareToMatch;
+    } catch (e) {
+        throw e;
+    }
+
 }
 
 module.exports = {

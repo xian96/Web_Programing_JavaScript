@@ -5,7 +5,7 @@ const privateRoute = require("./private");
 function constructor(app) {
     app.use("/", mainRoute);
     app.use("/login", loginRoute);
-    // app.use("/", mainRoute);
+    app.use("/private", privateRoute);
     app.use("/private", privateRoute);
 
     app.use("*", (req,res)=>{

@@ -7,7 +7,7 @@ const user = data.user;
 const session = require('express-session');
 
 router.get("/", async (req, res) => {
-    // 2.  If the user is not authenticaed, it will render a view with a login form
+    // 1.  If the user is not authenticaed, it will render a view with a login form
     //  for a username and password. 
     try {
         const authenticated = req.cookies.authenticated;
@@ -24,12 +24,6 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
     //This route is simple: making a POST to this route will attempt to log a user in with the credentials they provide in the login form.
-
-    //If the user provides a successful username / password combination, you will set a cookie named AuthCookie. This cookie must be named AuthCookie or your assignment will receive a major point deduction.
-
-    //  After logging in, you will redirect the user to the /private route.
-
-    //     If the user does not provide a valid login, you will render the login screen once again, and this time show an error message (along with an HTTP 401 status code) to the user explaining that they did not provide a valid username and/or password.
     try {
         const loginInfo = req.body;
         // console.log(loginInfo);
@@ -37,30 +31,24 @@ router.post("/", async (req, res) => {
             throw `not provide UserName`;
         if (!loginInfo.Password)
             throw `not provide Password`;
+        //     If the user does not provide a valid login, you will render the login screen once again, and this time show an error message (along with an HTTP 401 status code) to the user explaining that they did not provide a valid username and/or password.
         var loginSuccessful = await user.CheckLogin(loginInfo.UserName, loginInfo.Password);
-        if (loginSuccessful) {
-            // Use the session middleware
-            app.use(session({
-                name: 'AuthCookie',
-                secret: 'what is your name?',
-                resave: false,
-                saveUninitialized: true
-            }));
-        }
 
-        // const Person = await peopleData.getPeopleByName(req.body.personName);
-        // var Found = false;
-        // if (Person.length !== 0)
-        //   Found = true;
-        // res.render('people/search',
-        //   {
-        //     Found: Found,
-        //     Person: Person,
-        //     searchedName: req.body.personName,
-        //     stylesheetLink: "/public/site.css",
-        //     title: "People Finder"
-        //   });
-        // response.cookie('lastAccessed', now.toString(), { expires: expiresAt });
+        //If the user provides a successful username / password combination, you will set a cookie named AuthCookie. This cookie must be named AuthCookie or your assignment will receive a major point deduction. //After logging in, you will redirect the user to the /private route.
+
+        // session(options)
+        // Create a session middleware with the given options.
+        // Note Session data is not saved in the cookie itself, just the session ID. Session data is stored server-side.
+
+        // Use the session middleware
+        app.use(session({
+            name: 'AuthCookie',
+            secret: 'what is your name?',
+            resave: false,
+            saveUninitialized: true
+        }));
+        req.cookies.AuthCookie = true;
+        res.redirect('../private');
     } catch (e) {
         res.status(401).render('login/login', { error: e });
     }
