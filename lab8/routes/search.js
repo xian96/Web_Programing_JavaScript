@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
     if (!req.body.personName)
       throw `not provide name`;
     // console.log(req.body.personName);
-    const Person = peopleData.getPeopleByName(req.body.personName);
+    const Person = await peopleData.getPeopleByName(req.body.personName);
     var Found = false;
     if (Person.length !== 0)
       Found = true;
@@ -27,10 +27,11 @@ router.post('/', async (req, res) => {
         Found: Found,
         Person: Person,
         searchedName: req.body.personName,
-        linkHref: "/public/site.css"
+        stylesheetLink: "/public/site.css",
+        title: "People Finder"
       });
   } catch (e) {
-    res.status(404).render('error/error', { error: e });
+    res.status(404).render('error/error', { error: e ,stylesheetLink: "/public/site.css"});
   }
 });
 

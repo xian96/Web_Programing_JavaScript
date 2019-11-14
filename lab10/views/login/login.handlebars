@@ -1,0 +1,27 @@
+{{!-- 
+The form used to submit the POST request to
+the server must have an id of login-form. The input for the username must
+have a name/id of username; the input for the password must have name/id 
+of password. 
+--}}
+
+<form action="/login" method="post" id="login-form">
+    <div>
+        <label for="user_name">input:</label>
+        <input type="text" name="UserName" placeholder="input your username" id="user_name">
+    </div>
+    <div>
+        <label for="password">input:</label>
+        <input type="password" name="Password" placeholder="password here" id="password">
+    </div>
+
+    <div>
+        <label for="submit_form">click--></label>
+        <button type="submit" id="submit_form">LOGIN</button>
+    </div>
+
+</form>
+
+<div class="error" id="error-container">
+    <div>{{error}}</div>
+</div>

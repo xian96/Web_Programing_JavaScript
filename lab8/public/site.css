@@ -59,6 +59,10 @@
     font-size: 1rem;
     line-height: 2;
   }
+
+  dt{
+    color: #4d2525;
+  }
   
   .post {
     width: 75%;

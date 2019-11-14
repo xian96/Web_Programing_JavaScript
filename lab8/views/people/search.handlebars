@@ -1,14 +1,14 @@
-<link rel="stylesheet" href="{{linkHref}}">
-<h1>People Finder</h1>
+{{!-- <link rel="stylesheet" name = "stylesheetLink" href="{{stylesheetLink}}"/> --}}
+<h1>{{title}}</h1>
 <h2>{{searchedName}}</h2>
-{{!-- do need to wrap in the main tag??? --}}
+
+{{!-- do need to wrap in the body tag??? --}}
 
 <body>
 
     {{!-- how to limit up to 20 --}}
     {{#if Found}}
     <ul>
-    <p>one p; </p>
         {{#each Person}}
         <li>
             <a href="/details/{{id}}">{{firstName}} {{lastName}}</a>
@@ -19,6 +19,6 @@
     <p class="not-found">We're sorry, but no results were found for {{searchedName}}.</p>
     {{/if}}
 
+    <a href="/">Make another search</a>
 
-    <a href="/">back to mainPage</a>
 </body>

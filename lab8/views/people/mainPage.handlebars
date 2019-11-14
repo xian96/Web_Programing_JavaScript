@@ -1,9 +1,12 @@
-<link rel="stylesheet" href="{{linkHref}}">
-<h1>People Finder</h1>
+{{!-- <link rel="stylesheet" name="stylesheetLink" href="{{stylesheetLink}}"/> --}}
+{{!-- {{{stylesheetLink}}} --}}
+<h1>{{title}}</h1>
+
 {{!-- do need to wrap in the main tag??? or budy?? --}}
 
 <body>
-    <p>website for lab8, search through a dataset.</p>
+
+    <p>website for lab8, search through a dataset. <a href="https://gist.githubusercontent.com/robherley/5112d73f5c69a632ef3ae9b7b3073f78/raw/24a7e1453e65a26a8aa12cd0fb266ed9679816aa/people.json" target="_blank">people dataset</a></p>
     <form action="/search" method="POST" class="search_personName">
         {{!-- have an input and a label; the label should properly reference the same id as the input --}}
         <label>
@@ -17,13 +20,5 @@
         </label>
 
     </form>
-    {{#if hasErrors}}
-    <ul class="error-list">
-        {{#each errors}}
-        <li>
-            {{this}}
-        </li>
-        {{/each}}
-    </ul>
-    {{/if}}
+
 </body>

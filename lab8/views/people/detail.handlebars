@@ -1,7 +1,9 @@
-<link rel="stylesheet" href="{{linkHref}}">
-<h1>People Finder</h1>
+{{!-- <link rel="stylesheet" name="stylesheetLink" href="{{stylesheetLink}}" /> --}}
+
+<h1>{{title}}</h1>
 <h2>{{Person.firstName}} {{Person.lastName}}</h2>
-{{!-- do need to wrap in the main tag??? --}}
+
+{{!-- do need to wrap in the body tag??? --}}
 
 <body>
     <dl>
@@ -20,5 +22,6 @@
         <dt>Social Security Number </dt>
         <dd>{{Person.ssn}}</dd>
     </dl>
-    <a href="/">back to mainPage</a>
+    <a href="/">Make another search</a>
+
 </body>

@@ -3,18 +3,18 @@
 
 <head>
     <meta charset="utf-8">
-    <title>{{{h1}}}</title>
+    <title name = "title">{{{title}}}</title>
     {{!-- <meta name="keywords" content="{{keywords}}" /> --}}
     {{!-- <link rel="stylesheet" href="/public/site.css"> --}}
-    <link rel="stylesheet" href={{link.href}}>
+    <link rel="stylesheet" type="text/css" name ="stylesheetLink" href="{{stylesheetLink}}"/>
 </head>
 
 <body>
-    <h1>{{h1}}</h1>
+    {{!-- <h5>--------this is mainLayout------</h5> --}}
     <main>
         {{!-- what is body from? what data it stands for? --}}
         {{{body}}}
-    </main>
+    </main> 
 </body>
 
 </html>

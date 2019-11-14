@@ -8,7 +8,7 @@ const constructorMethod = (app) => {
   app.use('/details', detailsRoutes);
 
   app.use('*', (req, res) => {
-    res.status(404).json({error: 'Not found'});
+    res.status(404).render('error/error', { error: "not found" ,stylesheetLink: "/public/site.css"});
   });
 };
 

@@ -9,14 +9,15 @@ router.get('/:id', async (req, res) => {
   try {
     if (!req.params.id)
       throw `no id provided`;
-    console.log(req.params.id);
-    const Person = peopleData.getPersonById(req.params.id);
+    // console.log(req.params.id);
+    const Person = await peopleData.getPersonById(req.params.id);
     res.render('people/detail', {
       Person: Person,
-      linkHref: "/public/site.css"
+      stylesheetLink: "/public/site.css",
+      title: "People Finder"
     });
   } catch (e) {
-    res.status(404).render('error/error', { error: e });
+    res.status(404).render('error/error', { error: e, stylesheetLink: "/public/site.css" });
   }
 });
 

@@ -16,7 +16,7 @@ let exportedMethods = {
     const allPeople = await this.getAllPeople();
     const peopleMatch = [];
     for (const person in allPeople) {//loop through each person, if id not sorted;
-      if (allPeople[person].firstName.toLowerCase().includes(personName) || allPeople[person].lastName.toLowerCase().includes(personName)){
+      if (allPeople[person].firstName.toLowerCase().includes(personName) || allPeople[person].lastName.toLowerCase().includes(personName) || (allPeople[person].firstName.toLowerCase()+" "+allPeople[person].lastName.toLowerCase()).includes(personName)){
         // console.log(allPeople[person]);
         peopleMatch.push(allPeople[person]);
       }
@@ -31,10 +31,11 @@ let exportedMethods = {
 
     const allPeople = await this.getAllPeople();
     for (const person in allPeople) {//loop through each person, if id not sorted;
-      if (allPeople[person].id === personId)
+      if (allPeople[person].id == personId){
         return allPeople[person];
+      }
     }
-      return `person in personId:${personId} is not found!`;
+    throw `person in personId:${personId} is not found!`;
   },
 
 };

@@ -7,10 +7,11 @@ router.get('/', async (req, res) => {
         // const allPeople = peopleData.getAllPeople();
         // res.render('', { allPeople: allPeople });
         res.render('people/mainPage', {
-            linkHref: "/public/site.css"
+            stylesheetLink: "/public/site.css",
+            title: "People Finder"
         });
     } catch (e) {
-        res.status(404).render('error/error', { error: e });
+        res.status(404).render('error/error', { error: e ,stylesheetLink: "/public/site.css"});
     }
 });
 
