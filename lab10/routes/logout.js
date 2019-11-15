@@ -17,6 +17,9 @@ router.get("/", async (req, res) => {
             req.session.authenticate = false;
             // expire/delete the session AuthCookie 
             //TODO:
+            //TODO:
+            //TODO:
+            //TODO:
             res.render("logout/logout", { logoutInfo: "You have been logged out" });
         }
     } catch (e) {

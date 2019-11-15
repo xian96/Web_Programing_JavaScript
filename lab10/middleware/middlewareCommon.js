@@ -1,25 +1,44 @@
-// const express = require("express");
-// const app = express();
+//make express instance
+const express = require("express");
+const app = express();
+// It creates a cookie for the browser that will be used to track the current session of the user
+const session = require('express-session');
 
-// module.exports = app;
+// Use the session middleware: create a session-cookie across all the router.
+// session(options)
+// Create a session middleware with the given options.
+// Note Session data is not saved in the cookie itself, just the session ID. Session data is stored server-side.
+app.use(
+    session(
+        {
+            name: 'AuthCookie',
+            secret: 'what is your name?',
+            resave: false,
+            saveUninitialized: true
+        }
+    )
+);
 
-// // 1. One which will count the number of requests made to your website
-// let currentNumberOfRequests = 0;
-// function countRequest(request, response, next) {
-//     currentNumberOfRequests++;
-//     console.log('There have now been ' + currentNumberOfRequests + ' requests made to the website.');
-//     next();
-// }
-// app.use(countRequest);
+// for every request made to the server
+function userSessionCookie(request, response, next) {
+    // console.log('The request has all the following session cookies:');
+    // console.log(request.session);
 
-// // 2. One which will count the number of requests that have been made to the current path
-// const pathsAccessed = {};
-// function countEachPath(request, response, next) {
-//     if (!pathsAccessed[request.path]) pathsAccessed[request.path] = 0;
+    // Current Timestamp: new Date().toUTCString()
+    // Request Method: req.method
+    // Request Route: req.originalUrl
+    // Some string/boolean stating if a user is authenticated
+    const now = new Date();;
+    let auth = request.session.authenticate;
+    if (auth) {
+        authenticated = request.session.authenticate;
+    }
+    else {
+        var authenticated = false;
+    }
+    console.log(now.toUTCString() + " " + request.method + " " + request.originalUrl + " UserAuthenticated:" + authenticated);
+    next();
+}
+app.use(userSessionCookie);
 
-//     pathsAccessed[request.path]++;
-
-//     console.log('There have now been ' + pathsAccessed[request.path] + ' requests made to ' + request.path);
-//     next();
-// }
-// app.use(countEachPath);
+module.exports = app;

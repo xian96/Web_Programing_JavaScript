@@ -31,7 +31,7 @@ const users = [
 function getUserByUsername(username) {
     for (let i = 0; i < users.length; i++) {
         if (users[i].username == username) {
-            console.log("")
+            // console.log("")
             return users[i];
         }
     }

@@ -1,10 +1,9 @@
-// const middlewareCommon = require("./middlewareCommon");
-const middlewareLogin = require("./middlewareLogin");
+const middlewareCommon = require("./middlewareCommon");
+// const middlewareLogin = require("./middlewareLogin");
 const middlewarePrivate = require("./middlewarePrivate");
 
 function constructor(app) {
-    // app.use(middlewareCommon);
-    app.use(middlewareLogin);
+    app.use(middlewareCommon);
     app.use("/private", middlewarePrivate);
 }
 

@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
             );
         }
     } catch (e) {
-        res.render("login/login", { error: "--- OOPS ---" + e });
+        res.render("error", { error: "--- OOPS ---" + e });
     }
 });
 
@@ -28,15 +28,16 @@ router.post("/", async (req, res) => {
         const loginInfo = req.body;
         // console.log(loginInfo);
         if (!loginInfo.UserName)
-            throw `not provide UserName`;
+            res.status(401).render('login/login', { error: `not provide UserName` });
         if (!loginInfo.Password)
-            throw `not provide Password`;
-
-        // var loginCheckInfo = await user.CheckLogin(loginInfo.UserName, loginInfo.Password);
-        var user = await users.getUserByUsername(loginInfo.UserName);
+            res.status(401).render('login/login', { error: `not provide Password` });
+        console.log("--- Route see you password ---");
+        console.log(loginInfo.Password);
+        console.log("--- but still need to check the correction ---");
+        var user = users.getUserByUsername(loginInfo.UserName);
         if (user !== null) {
             //If the user provides a successful username / password combination, you will set a cookie named AuthCookie. This cookie must be named AuthCookie or your assignment will receive a major point deduction. //After logging in, you will redirect the user to the /private route.
-            var compareToMatch = await bcrypt.compare(password, user.hashedpassword);
+            var compareToMatch = bcrypt.compare(loginInfo.Password, user.hashedpassword);
             if (compareToMatch === false) {
                 res.status(401).render('login/login', { error: `password not correct` });
             }

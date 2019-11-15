@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 // const app = express();
 const data = require("../data");
-const users = data.user;
+const users = data.users;
 
 // This route will be simple, as well. This route will be protected 
 // your own authentication middleware to only allow valid, logged in users to see this page.
@@ -28,7 +28,7 @@ router.get("/", (req, res) => {
             );
         }
     } catch (e) {
-
+        res.render("error", { error: " --- OOPS --- " + e });
     }
 
 });
