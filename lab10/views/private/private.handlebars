@@ -1,27 +1,21 @@
-{{!-- <link rel="stylesheet" name="stylesheetLink" href="{{stylesheetLink}}" /> --}}
-
-<h1>{{title}}</h1>
-<h2>{{Person.firstName}} {{Person.lastName}}</h2>
-
-{{!-- do need to wrap in the body tag??? --}}
-
-<body>
-    <dl>
-        <dt>ID </dt>
-        <dd>{{Person.id}}</dd>
-        <dt>First Name </dt>
-        <dd>{{Person.firstName}}</dd>
-        <dt>Last Name </dt>
-        <dd>{{Person.lastName}}</dd>
-        <dt>Address </dt>
-        <dd>{{Person.address}}</dd>
-        <dt>Zip Code </dt>
-        <dd>{{Person.zip}}</dd>
-        <dt>Phone </dt>
-        <dd>{{Person.phone}}</dd>
-        <dt>Social Security Number </dt>
-        <dd>{{Person.ssn}}</dd>
-    </dl>
-    <a href="/logout">logout</a>
-
-</body>
+{{!-- 
+username: user.username,
+firstName: user.firstName,
+lastName: user.lastName,
+profession: user.profession,
+bio: user.bio, 
+--}}
+<dl>
+    <dt>Username: </dt>
+    <dd>{{username}}</dd>
+    <dt>First Name: </dt>
+    <dd>{{firstName}}</dd>
+    <dt>Last Name: </dt>
+    <dd>{{lastName}}</dd>
+    <dt>profession: </dt>
+    <dd>{{profession}}</dd>
+    <dt>bio: </dt>
+    <dd>{{bio}}</dd>
+</dl>
+{{!-- Also, you will need to have a hyperlink at the bottom of the page to /logout. --}}
+<a href="/logout">logout</a>

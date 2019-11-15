@@ -11,7 +11,16 @@ function userSessionCookie(request, response, next) {
     // Request Method: req.method
     // Request Route: req.originalUrl
     // Some string/boolean stating if a user is authenticated
-    console.log(now.toUTCString() + request.method + request.originalUrl + " is user authenticated:" + response.session.authenticate);
+    const now = new Date();;
+    let auth = request.session.authenticate;
+    console.log(auth);
+    if (auth){
+        authenticated = request.session.authenticate;
+    }
+    else { 
+        var authenticated = false;
+    }
+    console.log(now.toUTCString() +" "+ request.method +" "+ request.originalUrl + " UserAuthenticated:" + authenticated);
     next();
 }
 app.use(userSessionCookie);
