@@ -9,7 +9,7 @@ const users = data.users;
 router.get("/", (req, res) => {
     try {
         if (!req.session.authenticate) {
-            res.redirect('../login');
+            res.redirect('/login');
         }
         else {
             // If the user is logged in, you will make a simple view that displays

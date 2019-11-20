@@ -14,7 +14,7 @@ app.use(
             name: 'AuthCookie',
             secret: 'what is your name?',
             resave: false,
-            saveUninitialized: true
+            saveUninitialized: true,
         }
     )
 );

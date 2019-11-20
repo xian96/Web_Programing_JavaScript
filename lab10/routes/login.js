@@ -10,7 +10,7 @@ router.get("/", async (req, res) => {
     //  for a username and password. 
     try {
         if (req.session.authenticate) {
-            res.redirect('../private');
+            res.redirect('/private');
         }
         else {
             res.render("login/login",
@@ -31,14 +31,16 @@ router.post("/", async (req, res) => {
             res.status(401).render('login/login', { error: `not provide UserName` });
         if (!loginInfo.Password)
             res.status(401).render('login/login', { error: `not provide Password` });
-        console.log("--- Route see you password ---");
-        console.log(loginInfo.Password);
-        console.log("--- but still need to check the correction ---");
+        // console.log("--- Route see you password ---");
+        // console.log(loginInfo.Password);
+        // console.log("--- but still need to check the correction ---");
         var user = users.getUserByUsername(loginInfo.UserName);
+        console.log(user);
         if (user !== null) {
             //If the user provides a successful username / password combination, you will set a cookie named AuthCookie. This cookie must be named AuthCookie or your assignment will receive a major point deduction. //After logging in, you will redirect the user to the /private route.
-            var compareToMatch = bcrypt.compare(loginInfo.Password, user.hashedpassword);
-            if (compareToMatch === false) {
+            var compareToMatch = await bcrypt.compare(loginInfo.Password, user.hashedpassword);
+            console.log(compareToMatch);
+            if (compareToMatch == false) {
                 res.status(401).render('login/login', { error: `password not correct` });
             }
             else {
@@ -47,7 +49,7 @@ router.post("/", async (req, res) => {
                 // expiresAt.setHours(expiresAt.getHours() + 1);
                 req.session.userID = user._id;
                 req.session.authenticate = true;
-                res.redirect('../private');
+                res.redirect('/private');
             }
         }
         else {

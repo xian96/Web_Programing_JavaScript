@@ -11,15 +11,13 @@ const router = express.Router();
 router.get("/", async (req, res) => {
     try {
         if (!req.session.authenticate) {//not login no need to logout;
-            res.redirect('../login');
+            res.redirect('/login');
         }
         else {
-            req.session.authenticate = false;
+            // req.session.authenticate = false;
             // expire/delete the session AuthCookie 
             //TODO:
-            //TODO:
-            //TODO:
-            //TODO:
+            req.session.destroy();
             res.render("logout/logout", { logoutInfo: "You have been logged out" });
         }
     } catch (e) {

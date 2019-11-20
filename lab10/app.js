@@ -1,19 +1,19 @@
 // We first require our express package
 const express = require('express');
-const cookieParser = require('cookie-parser');
+// const cookieParser = require('cookie-parser');
 // We create our express isntance:
 const app = express();
 
 //require the view engine
 const exphbs = require('express-handlebars');// const Handlebars = require('handlebars');
-const static = express.static(__dirname + '/public');
+// const static = express.static(__dirname + '/public');
 
 // app.engine('handlebars', handlebarsInstance.engine);
 app.engine('handlebars', exphbs({ defaultLayout: 'layout' }));//how to find path? root = layouts?
 app.set('view engine', 'handlebars');// what is view engine.
 
-app.use('/public', static);//is this middleware? when is goes to /public?
-app.use(cookieParser());//third party middleware
+app.use('/public', express.static(__dirname + '/public'));//is this middleware? when is goes to /public?
+// app.use(cookieParser());//third party middleware
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true }));//It parses incoming requests with urlencoded payloads and is based on body-parser.
 
